@@ -1,0 +1,250 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}
+Ekart | Products
+{% endblock %}
+{% block body %}
+<div class="row mt-3 p-3 mb-5">
+    <h2 class="mb-4">Search Your Hotels</h2>
+    <div class="col-md-12 search-container p-3">
+        <form>
+            <div class="row g-4">
+                <div class="col-md-3 x">
+                    <label for="location" class="form-label">City or Location</label>
+                    <input type="text" class="form-control search-input-1" id="location" placeholder="Andheri">
+                </div>
+                <div class="col-md-3 x">
+                    <label for="check-in" class="form-label">Check-in</label>
+                    <input type="date" class="form-control search-input" id="check-in">
+                </div>
+                <div class="col-md-3 x">
+                    <label for="check-out" class="form-label">Check-out</label>
+                    <input type="date" class="form-control search-input" id="check-out">
+                </div>
+                <div class="col-md-3 x" style="border: none;">
+                    <label for="guest_room" class="form-label">Guests & Rooms</label>
+                    <input type="text" class="form-control search-input" id="guest_room"
+                        placeholder=" 2 Guests 1 Rooms">
+                </div>
+            </div>
+
+            <div class="mt-4 p-2" style="margin-left: 42%;">
+                <button type="button" class="btn btn-primary search-button">Search</button>
+            </div>
+        </form>
+    </div>
+</div>
+<br>
+<br>
+<hr>
+<div class="row mt-3 p-3 ">
+    <a href="#carouselIndicators" style="text-decoration: none; color: black;">
+        <h4 style="margin-left: 50px;"><b>Top-Rated Hotels</b></h4>
+    </a>
+    <!-- data-bs-ride="carousel" -->
+    <div id="carouselIndicators" class="carousel slide">
+        <div class="carousel-inner">
+            <div class="carousel-item active p-5">
+                <div class="row">
+                    <div class="col-md-4">
+                        <div class="card" style="width: 100%;">
+                            <img src="static/images/hotel1.jpg." class="card-img-top" alt="image" width="100%"
+                                height="250px">
+                            <div class="card-body box">
+                                <h5 class="card-title">Hotel Name</h5>
+                                <p class="card-text">Price </p>
+                                <p class="card-text">ratings</p>
+                                <p class="card-text">Location</p>
+                                <a href="" class="btn btn-primary">View Details</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="card" style="width: 100%;">
+                            <img src="static/images/hotel1.jpg." class="card-img-top" alt="image" width="100%"
+                                height="250px">
+                            <div class="card-body box">
+                                <h5 class="card-title">Hotel Name</h5>
+                                <p class="card-text">Price </p>
+                                <p class="card-text">ratings</p>
+                                <p class="card-text">Location</p>
+                                <a href="" class="btn btn-primary">View Details</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="card" style="width: 100%;">
+                            <img src="static/images/hotel1.jpg." class="card-img-top" alt="image" width="100%"
+                                height="250px">
+                            <div class="card-body box">
+                                <h5 class="card-title">Hotel Name</h5>
+                                <p class="card-text">Price </p>
+                                <p class="card-text">ratings</p>
+                                <p class="card-text">Location</p>
+                                <a href="" class="btn btn-primary">View Details</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="carousel-item p-5">
+                <div class="row">
+                    <div class="col-md-4">
+                        <div class="card" style="width: 100%;">
+                            <img src="static/images/hotel2.jpg." class="card-img-top" alt="image" width="100%"
+                                height="250px">
+                            <div class="card-body box">
+                                <h5 class="card-title">Hotel Name</h5>
+                                <p class="card-text">Price </p>
+                                <p class="card-text">ratings</p>
+                                <p class="card-text">Location</p>
+                                <a href="" class="btn btn-primary">View Details</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="card" style="width: 100%;">
+                            <img src="static/images/hotel2.jpg." class="card-img-top" alt="image" width="100%"
+                                height="250px">
+                            <div class="card-body box">
+                                <h5 class="card-title">Hotel Name</h5>
+                                <p class="card-text">Price </p>
+                                <p class="card-text">ratings</p>
+                                <p class="card-text">Location</p>
+                                <a href="" class="btn btn-primary">View Details</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="card" style="width: 100%;">
+                            <img src="static/images/hotel2.jpg." class="card-img-top" alt="image" width="100%"
+                                height="250px">
+                            <div class="card-body box">
+                                <h5 class="card-title">Hotel Name</h5>
+                                <p class="card-text">Price </p>
+                                <p class="card-text">ratings</p>
+                                <p class="card-text">Location</p>
+                                <a href="" class="btn btn-primary">View Details</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="carousel-item p-5">
+                <div class="row">
+                    <div class="col-md-4">
+                        <div class="card" style="width: 100%;">
+                            <img src="static/images/hotel3.jpg." class="card-img-top" alt="image" width="100%"
+                                height="250px">
+                            <div class="card-body box">
+                                <h5 class="card-title">Hotel Name</h5>
+                                <p class="card-text">Price </p>
+                                <p class="card-text">ratings</p>
+                                <p class="card-text">Location</p>
+                                <a href="" class="btn btn-primary">View Details</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="card" style="width: 100%;">
+                            <img src="static/images/hotel3.jpg." class="card-img-top" alt="image" width="100%"
+                                height="250px">
+                            <div class="card-body box">
+                                <h5 class="card-title">Hotel Name</h5>
+                                <p class="card-text">Price </p>
+                                <p class="card-text">ratings</p>
+                                <p class="card-text">Location</p>
+                                <a href="" class="btn btn-primary">View Details</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="card" style="width: 100%;">
+                            <img src="static/images/hotel3.jpg." class="card-img-top" alt="image" width="100%"
+                                height="250px">
+                            <div class="card-body box">
+                                <h5 class="card-title">Hotel Name</h5>
+                                <p class="card-text">Price </p>
+                                <p class="card-text">ratings</p>
+                                <p class="card-text">Location</p>
+                                <a href="" class="btn btn-primary">View Details</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <button class="carousel-control-prev" type="button" data-bs-target="#carouselIndicators" data-bs-slide="prev">
+            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Previous</span>
+        </button>
+        <button class="carousel-control-next" type="button" data-bs-target="#carouselIndicators" data-bs-slide="next">
+            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Next</span>
+        </button>
+    </div>
+</div>
+<hr>
+<div class="row mt-3 p-3">
+    <a href="#carouselIndicators1" style="text-decoration: none; color: black;">
+        <h4 style="margin-left: 50px;"><b>Popular Searches</b></h4>
+    </a>
+    <!-- data-bs-ride="carousel" -->
+    <div id="carouselIndicators1" class="carousel slide" data-bs-ride="carousel">
+        <div class="carousel-inner">
+            <div class="carousel-item active p-5">
+                <div class="row">
+                    <div class="col-md-4">
+                        <div class="card-body box" style="width: 100%;">
+                            <img src="static/images/mumbaihotel.jpg." alt="image" width="100%" height="250px">
+                            <div class="overlay-text">Mumbai</div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="card-body box" style="width: 100%;">
+                            <img src="static/images/jaipurhotel.webp." alt="image" width="100%" height="250px">
+                            <div class="overlay-text">Jaipur</div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="card-body box" style="width: 100%;">
+                            <img src="static/images/udaipurhotel.jpg." alt="image" width="100%" height="250px">
+                            <div class="overlay-text">Udaipur</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="carousel-item p-5">
+                <div class="row">
+                    <div class="col-md-4">
+                        <div class="card-body box" style="width: 100%;">
+                            <img src="static/images/hotel-delhi.jpg." alt="image" width="100%" height="250px">
+                            <div class="overlay-text">Delhi</div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="card-body box" style="width: 100%;">
+                            <img src="static/images/Hotels-Mahabaleshwar.webp." alt="image" width="100%" height="250px">
+                            <div class="overlay-text">Mahabaleshwar</div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="card-body box" style="width: 100%;">
+                            <img src="static/images/Bangalore-Hotel.webp." alt="image" width="100%" height="250px">
+                            <div class="overlay-text">Bengaluru</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <button class="carousel-control-prev" type="button" data-bs-target="#carouselIndicators1" data-bs-slide="prev">
+            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Previous</span>
+        </button>
+        <button class="carousel-control-next" type="button" data-bs-target="#carouselIndicators1" data-bs-slide="next">
+            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Next</span>
+        </button>
+    </div>
+</div>
+{% endblock %}

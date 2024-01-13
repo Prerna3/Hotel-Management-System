@@ -1,0 +1,87 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}
+Ekart | Products
+{% endblock %}
+{% block body %}
+<div class="row mt-3 p-3">
+    <h2 class="mb-4">Search Your Hotels</h2>
+    <div class="col-md-12 search-container p-3">
+        <form>
+            <div class="row g-4">
+                <div class="col-md-3 x">
+                    <label for="location" class="form-label">City or Location</label>
+                    <input type="text" class="form-control search-input-1" id="location" placeholder="Andheri">
+                </div>
+                <div class="col-md-3 x">
+                    <label for="check-in" class="form-label">Check-in</label>
+                    <input type="date" class="form-control search-input" id="check-in">
+                </div>
+                <div class="col-md-3 x">
+                    <label for="check-out" class="form-label">Check-out</label>
+                    <input type="date" class="form-control search-input" id="check-out">
+                </div>
+                <div class="col-md-3 x" style="border: none;">
+                    <label for="guest_room" class="form-label">Guests & Rooms</label>
+                    <input type="text" class="form-control search-input" id="guest_room"
+                        placeholder=" 2 Guests 1 Rooms">
+                </div>
+            </div>
+
+            <div class="mt-4 p-2" style="margin-left: 42%;">
+                <button type="button" class="btn btn-primary search-button">Search</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<div class="row mt-3 p-2 mb-3 hotel">
+    <div class="col-md-4 mt-3 p-3">
+        <img src="{%static 'images/background.jpg'%}" class="card-img-top" alt="image" width="100%" height="250px">
+    </div>
+    <div class="col-md-8 mt-3 p-3">
+        <div class="card-body">
+            <h5 class="card-title">Las Casas de la Judería</h5>
+            <p class="card-text">Hotel Seville, 0.6 km to City centre </p>
+            <p class="card-text">Price: ₹12,414</p>
+            <p class="card-text">8.9 - Excellent (2839 reviews)</p>
+        </div>
+        <br>
+        <a href="#"><button type="button" class="btn btn-primary">View Rooms</button></a>
+        <a href="/"><button type="button" class="btn btn-primary">Back</button></a>
+    </div>
+</div>
+<div class="row mt-3 p-2 mb-3 hotel">
+    <div class="col-md-4 mt-3 p-3">
+        <img src="{%static 'images/mumbaihotel.jpg'%}" class="card-img-top" alt="image" width="100%" height="250px">
+    </div>
+    <div class="col-md-8 mt-3 p-3">
+        <div class="card-body">
+            <h5 class="card-title">The Taj Mahal Palace</h5>
+            <p class="card-text">Hotel Taj, 25.0km from Chhatrapati Shivaji International Airport </p>
+            <p class="card-text">Price: ₹30,000 </p>
+            <p class="card-text">9.5 - Excellent (3859 reviews)</p>
+        </div>
+        <br>
+        <a href="#"><button type="button" class="btn btn-primary">View Rooms</button></a>
+        <a href="/"><button type="button" class="btn btn-primary">Back</button></a>
+    </div>
+</div>
+<div class="row mt-3 p-2 mb-3 hotel">
+    <div class="col-md-4 mt-3 p-3">
+        <img src="{%static 'images/udaipurhotel.jpg'%}" class="card-img-top" alt="image" width="100%" height="250px">
+    </div>
+    <div class="col-md-8 mt-3 p-3">
+        <div class="card-body">
+            <h5 class="card-title">Udaipur Palace Hotel</h5>
+            <p class="card-text">Hotel Palace, 5.0km from City </p>
+            <p class="card-text">Price: ₹55,000 </p>
+            <p class="card-text">9.0 - Excellent (11850 reviews)</p>
+        </div>
+        <br>
+        <a href="#"><button type="button" class="btn btn-primary">View Rooms</button></a>
+        <a href="/"><button type="button" class="btn btn-primary">Back</button></a>
+    </div>
+</div>
+
+{% endblock %}

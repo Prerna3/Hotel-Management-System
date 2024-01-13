@@ -1,0 +1,63 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        .card {
+            display: flex;
+            width: 600px;
+            margin: 20px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            overflow: hidden;
+        }
+
+        .card-img {
+            flex: 1;
+            max-height: 150px;
+            object-fit: cover;
+        }
+
+        .card-body {
+            flex: 2;
+            padding: 20px;
+        }
+
+        .card-title {
+            font-size: 1.5rem;
+            margin-bottom: 10px;
+        }
+
+        .card-text {
+            margin-bottom: 10px;
+        }
+
+        .btn {
+            padding: 10px 20px;
+            text-decoration: none;
+            color: #fff;
+            background-color: #007bff;
+            border: none;
+            border-radius: 5px;
+        }
+    </style>
+    <title>Hotel Information</title>
+</head>
+
+<body>
+    <div class="card">
+        <img src="static/images/hotel1.jpg." class="card-img" alt="Hotel Image">
+        <div class="card-body">
+            <h2 class="card-title">Las Casas de la Judería</h2>
+            <p class="card-text">Hotel Seville, 0.6 km to City centre</p>
+            <p class="card-text">₹12,414</p>
+            <p class="card-text">8.9 - Excellent (2839 reviews)</p>
+            <a href="#" class="btn">View Deal</a>
+        </div>
+    </div>
+</body>
+
+</html>
