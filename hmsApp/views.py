@@ -11,6 +11,11 @@ def index(req):
 def viewHotel(req):
     return render(req,"viewHotel.html")
 
+def viewRoom(req):
+    return render(req,"viewRoom.html")
+
+def myProfile(req):
+    return render(req,"profile.html")
 
 def register_user(req):
     form = CreateUserForm()
