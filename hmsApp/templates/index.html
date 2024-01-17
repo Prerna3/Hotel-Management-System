@@ -10,8 +10,14 @@ HOTELIVA | Home
         <form>
             <div class="row g-4">
                 <div class="col-md-3 x">
-                    <label for="location" class="form-label">City or Location</label>
-                    <input type="text" class="form-control search-input-1" id="location" placeholder="Andheri">
+                    <!-- <label for="location" class="form-label">City or Location</label>
+                    <input type="text" class="form-control search-input-1" id="location" placeholder="Andheri"> -->
+                    <label for="location">Location</label>
+                    <select id="location" name="location" class="form-control search-input-1">
+                        {% for x in hotels %}
+                        <option value="{{ x.location }}">{{ x.location }}</option>
+                        {% endfor %}
+                    </select>
                 </div>
                 <div class="col-md-3 x">
                     <label for="check-in" class="form-label">Check-in</label>
@@ -46,131 +52,38 @@ HOTELIVA | Home
         <div class="carousel-inner">
             <div class="carousel-item active p-5">
                 <div class="row">
+                    {% for x in first_three_hotels %}
                     <div class="col-md-4">
                         <div class="card" style="width: 100%;">
-                            <img src="static/images/hotel1.jpg." class="card-img-top" alt="image" width="100%"
-                                height="250px">
+                            <img src="{{x.image.url}}" class="card-img-top" alt="image" width="100%" height="250px">
                             <div class="card-body box">
-                                <h5 class="card-title">Hotel Name</h5>
-                                <p class="card-text">Price </p>
-                                <p class="card-text">ratings</p>
-                                <p class="card-text">Location</p>
-                                <a href="" class="btn btn-primary">View Details</a>
+                                <h5 class="card-title">{{x.hotel_name}}</h5>
+                                <p class="card-text"> ₹{{x.price}} / Per Night</p>
+                                <p class="card-text">{{x.category}}</p>
+                                <p class="card-text">{{x.location}}</p>
+                                <a href="/viewHotel" class="btn btn-primary">View Details</a>
                             </div>
                         </div>
                     </div>
-                    <div class="col-md-4">
-                        <div class="card" style="width: 100%;">
-                            <img src="static/images/hotel1.jpg." class="card-img-top" alt="image" width="100%"
-                                height="250px">
-                            <div class="card-body box">
-                                <h5 class="card-title">Hotel Name</h5>
-                                <p class="card-text">Price </p>
-                                <p class="card-text">ratings</p>
-                                <p class="card-text">Location</p>
-                                <a href="" class="btn btn-primary">View Details</a>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-4">
-                        <div class="card" style="width: 100%;">
-                            <img src="static/images/hotel1.jpg." class="card-img-top" alt="image" width="100%"
-                                height="250px">
-                            <div class="card-body box">
-                                <h5 class="card-title">Hotel Name</h5>
-                                <p class="card-text">Price </p>
-                                <p class="card-text">ratings</p>
-                                <p class="card-text">Location</p>
-                                <a href="" class="btn btn-primary">View Details</a>
-                            </div>
-                        </div>
-                    </div>
+                    {% endfor %}
                 </div>
             </div>
             <div class="carousel-item p-5">
                 <div class="row">
+                    {% for x in next_three_hotels %}
                     <div class="col-md-4">
                         <div class="card" style="width: 100%;">
-                            <img src="static/images/hotel2.jpg." class="card-img-top" alt="image" width="100%"
-                                height="250px">
+                            <img src="{{x.image.url}}" class="card-img-top" alt="image" width="100%" height="250px">
                             <div class="card-body box">
-                                <h5 class="card-title">Hotel Name</h5>
-                                <p class="card-text">Price </p>
-                                <p class="card-text">ratings</p>
-                                <p class="card-text">Location</p>
-                                <a href="" class="btn btn-primary">View Details</a>
+                                <h5 class="card-title">{{x.hotel_name}}</h5>
+                                <p class="card-text"> ₹{{x.price}} / Per Night</p>
+                                <p class="card-text">{{x.category}}</p>
+                                <p class="card-text">{{x.location}}</p>
+                                <a href="/viewHotel" class="btn btn-primary">View Details</a>
                             </div>
                         </div>
                     </div>
-                    <div class="col-md-4">
-                        <div class="card" style="width: 100%;">
-                            <img src="static/images/hotel2.jpg." class="card-img-top" alt="image" width="100%"
-                                height="250px">
-                            <div class="card-body box">
-                                <h5 class="card-title">Hotel Name</h5>
-                                <p class="card-text">Price </p>
-                                <p class="card-text">ratings</p>
-                                <p class="card-text">Location</p>
-                                <a href="" class="btn btn-primary">View Details</a>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-4">
-                        <div class="card" style="width: 100%;">
-                            <img src="static/images/hotel2.jpg." class="card-img-top" alt="image" width="100%"
-                                height="250px">
-                            <div class="card-body box">
-                                <h5 class="card-title">Hotel Name</h5>
-                                <p class="card-text">Price </p>
-                                <p class="card-text">ratings</p>
-                                <p class="card-text">Location</p>
-                                <a href="" class="btn btn-primary">View Details</a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="carousel-item p-5">
-                <div class="row">
-                    <div class="col-md-4">
-                        <div class="card" style="width: 100%;">
-                            <img src="static/images/hotel3.jpg." class="card-img-top" alt="image" width="100%"
-                                height="250px">
-                            <div class="card-body box">
-                                <h5 class="card-title">Hotel Name</h5>
-                                <p class="card-text">Price </p>
-                                <p class="card-text">ratings</p>
-                                <p class="card-text">Location</p>
-                                <a href="" class="btn btn-primary">View Details</a>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-4">
-                        <div class="card" style="width: 100%;">
-                            <img src="static/images/hotel3.jpg." class="card-img-top" alt="image" width="100%"
-                                height="250px">
-                            <div class="card-body box">
-                                <h5 class="card-title">Hotel Name</h5>
-                                <p class="card-text">Price </p>
-                                <p class="card-text">ratings</p>
-                                <p class="card-text">Location</p>
-                                <a href="" class="btn btn-primary">View Details</a>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-4">
-                        <div class="card" style="width: 100%;">
-                            <img src="static/images/hotel3.jpg." class="card-img-top" alt="image" width="100%"
-                                height="250px">
-                            <div class="card-body box">
-                                <h5 class="card-title">Hotel Name</h5>
-                                <p class="card-text">Price </p>
-                                <p class="card-text">ratings</p>
-                                <p class="card-text">Location</p>
-                                <a href="" class="btn btn-primary">View Details</a>
-                            </div>
-                        </div>
-                    </div>
+                    {% endfor %}
                 </div>
             </div>
         </div>
