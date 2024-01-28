@@ -7,35 +7,30 @@ HOTELIVA | Home
 <div class="row mt-3 p-3 mb-5">
     <h2 class="mb-4">Search Your Hotels</h2>
     <div class="col-md-12 search-container p-3">
-        <form>
+        <form method="POST" action="{% url 'search' %}">
+            {% csrf_token %}
             <div class="row g-4">
                 <div class="col-md-3 x">
-                    <!-- <label for="location" class="form-label">City or Location</label>
-                    <input type="text" class="form-control search-input-1" id="location" placeholder="Andheri"> -->
-                    <label for="location">Location</label>
-                    <select id="location" name="location" class="form-control search-input-1">
-                        {% for x in hotels %}
-                        <option value="{{ x.location }}">{{ x.location }}</option>
-                        {% endfor %}
-                    </select>
+                    <label for="loc" class="form-label">City or Location</label>
+                    <input type="text" class="form-control search-input" id="loc" name="loc"
+                        placeholder="Mumbai, Delhi ..." required>
                 </div>
                 <div class="col-md-3 x">
                     <label for="check-in" class="form-label">Check-in</label>
-                    <input type="date" class="form-control search-input" id="check-in">
+                    <input type="date" class="form-control search-input" id="check-in" name="check_in" required>
                 </div>
                 <div class="col-md-3 x">
                     <label for="check-out" class="form-label">Check-out</label>
-                    <input type="date" class="form-control search-input" id="check-out">
+                    <input type="date" class="form-control search-input" id="check-out" name="check_out" required>
                 </div>
                 <div class="col-md-3 x" style="border: none;">
                     <label for="guest_room" class="form-label">Guests & Rooms</label>
-                    <input type="text" class="form-control search-input" id="guest_room"
-                        placeholder=" 2 Guests 1 Rooms">
+                    <input type="text" class="form-control search-input" id="guest_room" name="num_guests"
+                        placeholder=" 2 Guests 1 Rooms" required>
                 </div>
-            </div>
-
-            <div class="mt-4 p-2" style="margin-left: 42%;">
-                <button type="button" class="btn btn-primary search-button">Search</button>
+                <div class="mt-4 p-2" style="margin-left: 42%;">
+                    <button type="submit" class="btn btn-primary search-button">Search</button>
+                </div>
             </div>
         </form>
     </div>
@@ -47,7 +42,6 @@ HOTELIVA | Home
     <a href="#carouselIndicators" style="text-decoration: none; color: black;">
         <h4 style="margin-left: 50px;"><b>Top-Rated Hotels</b></h4>
     </a>
-    <!-- data-bs-ride="carousel" -->
     <div id="carouselIndicators" class="carousel slide">
         <div class="carousel-inner">
             <div class="carousel-item active p-5">
