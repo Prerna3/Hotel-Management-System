@@ -18,6 +18,7 @@ def index(req):
         "first_three_hotels": first_three_hotels,
         "next_three_hotels": next_three_hotels,
     }
+
     return render(req, "index.html", context)
 
 
@@ -26,6 +27,23 @@ def viewHotel(req):
     context = {}
     context["hotels"] = hotels
     return render(req, "viewHotel.html", context)
+
+
+def search(req):
+    if req.method == "GET":
+        return redirect("/")
+    else:
+        loc = req.POST.get("loc")
+        if loc:
+            queryset = Hotel.prod.get_location(loc)
+            print(queryset)
+            context = {
+                "hotels": queryset,
+                "loc": loc,
+            }
+            return render(req, "viewHotel.html", context)
+        else:
+            return redirect("/")
 
 
 def viewRoom(req):
