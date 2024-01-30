@@ -1,11 +1,39 @@
 from django.db import models
 from django.contrib.auth.models import User
 from django.utils.html import mark_safe
+from phonenumber_field.modelfields import PhoneNumberField
 
 
 class CustomeManager(models.Manager):
+    def get_price_range(self, r1, r2):
+        return self.filter(room_price__range=(r1, r2))
+
     def get_location(self, location):
         return self.filter(location__iexact=location)
+
+    def aclist(self):
+        return self.filter(ac_room__exact="AC")
+
+    def nonaclist(self):
+        return self.filter(ac_room__exact="Non-AC")
+
+    def kingroomlist(self):
+        return self.filter(room_category__exact="King Room")
+
+    def queenroomlist(self):
+        return self.filter(room_category__exact="Queen Room")
+
+    def twinroomlist(self):
+        return self.filter(room_category__exact="Twin Room")
+
+    def singleroomlist(self):
+        return self.filter(room_category__exact="Single Room")
+
+    def doubleroomlist(self):
+        return self.filter(room_category__exact="Double Room")
+
+    def doubledoubleroomlist(self):
+        return self.filter(room_category__exact="Double-Double Room")
 
 
 class Hotel(models.Model):
@@ -33,9 +61,68 @@ class Hotel(models.Model):
         return f"{self.hotel_name}"
 
 
-class Booking(models.Model):
+class ImageGallery(models.Model):
     hotel = models.ForeignKey(Hotel, on_delete=models.CASCADE)
+    imagegallery = models.ImageField(upload_to="hotelroom_gallery")
+
+    def galleryImage(self):
+        return mark_safe(f"<img src='{self.imagegallery.url}' width='300px'>")
+
+    def __str__(self):
+        return f"Image for {self.hotel.hotel_name}"
+
+
+class Room(models.Model):
+    hotel = models.ForeignKey(Hotel, on_delete=models.CASCADE)
+    room_id = models.IntegerField(primary_key=True)
+    room_name = models.CharField(max_length=50)
+    type = {
+        ("King Room", "King Room"),
+        ("Queen Room", "Queen Room"),
+        ("Single Room", "Single Room"),
+        ("Double Room", "Double Room"),
+        ("Double-Double Room", "Double-Double Room"),
+        ("Twin Room", "Twin Room"),
+    }
+    room_category = models.CharField(max_length=20, choices=type)
+    room_contain = {("AC", "AC"), ("Non-AC", "Non-AC")}
+    ac_room = models.CharField(max_length=10, choices=room_contain, default=True)
+    max_capacity = models.IntegerField()
+    room_price = models.IntegerField()
+    roomImage = models.ImageField(upload_to="room_pics")
+
+    prod = CustomeManager()
+    objects = models.Manager()
+
+    def roomImages(self):
+        return mark_safe(f"<img src='{self.roomImage.url}' width='300px'>")
+
+    def _str_(self):
+        return f"{self.room_id}.{self.room_category} with {self.beds} beds for {self.max_capacity} people"
+
+
+class Booking(models.Model):
+    room = models.ForeignKey(Room, on_delete=models.CASCADE, default=True)
     check_in_date = models.DateField()
     check_out_date = models.DateField()
     num_guests = models.PositiveIntegerField()
     num_rooms = models.PositiveIntegerField()
+    user = models.ForeignKey(User, on_delete=models.CASCADE, default=1)
+
+    def _str_(self):
+        return f"{self.user} has booked {self.room} from {self.check_in_date} to {self.check_out_date}"
+
+
+class Profile(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE, default=1)
+    name = models.CharField(max_length=30, blank=True, null=True)
+    gender = models.CharField(max_length=30, blank=True, null=True)
+    address = models.TextField(max_length=200, blank=True)
+    profilePic = models.ImageField(upload_to="profilePic", default=None)
+    pincode = models.CharField(max_length=30, blank=True, null=True)
+    state = models.CharField(max_length=30, blank=True, null=True)
+    dob = models.DateField()
+    phoneNo = models.CharField(max_length=10, blank=True, null=True)
+
+    def _str_(self):
+        return f"{self.user} has name {self.name} gender {self.gender} dob {self.dob} state {self.state} pincode {self.pincode}"

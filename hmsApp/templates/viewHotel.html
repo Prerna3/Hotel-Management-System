@@ -7,30 +7,18 @@ HOTELIVA | Hotels
 <div class="row mt-3 p-3">
     <h2 class="mb-4">Search Your Hotels</h2>
     <div class="col-md-12 search-container p-3">
-        <form>
-            <div class="row g-4">
-                <div class="col-md-3 x">
-                    <label for="location" class="form-label">City or Location</label>
-                    <input type="text" class="form-control search-input-1" id="location" name="location"
-                        placeholder="Andheri">
+        <form method="POST" action="{% url 'search' %}">
+            {% csrf_token %}
+            <div class="row">
+                <div class="col-md-12 x">
+                    <label for="loc" class="form-label">City or Location</label>
+                    <input type="text" class="form-control search-input-1" id="loc" name="loc"
+                        placeholder="Mumbai, Delhi..." required>
                 </div>
-                <div class="col-md-3 x">
-                    <label for="check-in" class="form-label">Check-in</label>
-                    <input type="date" class="form-control search-input" id="check-in" name="check-in">
-                </div>
-                <div class="col-md-3 x">
-                    <label for="check-out" class="form-label">Check-out</label>
-                    <input type="date" class="form-control search-input" id="check-out" name="check-out">
-                </div>
-                <div class="col-md-3 x" style="border: none;">
-                    <label for="guest_room" class="form-label">Guests & Rooms</label>
-                    <input type="number" class="form-control search-input" id="guest_room" name="Guests"
-                        placeholder=" 2 Guests 1 Rooms">
-                </div>
-            </div>
 
-            <div class="mt-4 p-2" style="margin-left: 42%;">
-                <button type="button" class="btn btn-primary search-button">Search</button>
+                <div class="mt-4 p-2" style="margin-left: 42%;">
+                    <button type="button" class="btn btn-primary search-button">Search</button>
+                </div>
             </div>
         </form>
     </div>
@@ -53,6 +41,7 @@ HOTELIVA | Hotels
         <br>
         <a href="/viewRoom"><button type="button" class="btn btn-primary">View Rooms</button></a>
         <a href="/"><button type="button" class="btn btn-primary">Back</button></a>
+        <!-- href="/viewRoom/{{hotel.hotel_id}}" -->
     </div>
 </div>
 {% endfor %}

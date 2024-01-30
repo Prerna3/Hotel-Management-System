@@ -4,90 +4,95 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-    <title>Booking Details</title>
+    <link rel="stylesheet" href="styles.css">
+    <title>Edit Profile</title>
     <style>
         body {
-            background-color: #f8f9fa;
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
         }
 
-        .container {
-            margin-top: 50px;
+        .form-container {
+            max-width: 400px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
         }
 
-        .booking-card {
-            border: 1px solid #dee2e6;
-            border-radius: 8px;
-            overflow: hidden;
+        h1 {
+            text-align: center;
+        }
+
+        .form-group {
             margin-bottom: 20px;
         }
 
-        .card-header {
-            background-color: #007bff;
-            color: #ffffff;
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
         }
 
-        .card-body {
-            padding: 20px;
+        .form-group input,
+        .form-group select {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
         }
 
-        .detail-label {
-            font-weight: bold;
+        .required {
+            color: red;
+        }
+
+        .button-group {
+            text-align: right;
+        }
+
+        .cancel-button {
+            background-color: #ccc;
+        }
+
+        .save-button {
+            background-color: #4caf50;
+            color: #fff;
         }
     </style>
 </head>
 
 <body>
-
-    <div class="container">
-        <div class="row justify-content-center">
-            <div class="col-md-8">
-                <div class="booking-card">
-                    <div class="card-header">
-                        <h5 class="mb-0">Booking Details</h5>
-                    </div>
-                    <div class="card-body">
-                        <div class="row">
-                            <div class="col-md-6">
-                                <p class="detail-label">Booking ID:</p>
-                                <p>123456</p>
-                            </div>
-                            <div class="col-md-6">
-                                <p class="detail-label">Date:</p>
-                                <p>January 15, 2022</p>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-md-6">
-                                <p class="detail-label">Hotel Name:</p>
-                                <p>Sample Hotel</p>
-                            </div>
-                            <div class="col-md-6">
-                                <p class="detail-label">Room Type:</p>
-                                <p>Deluxe Room</p>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-md-6">
-                                <p class="detail-label">Check-in:</p>
-                                <p>January 20, 2022</p>
-                            </div>
-                            <div class="col-md-6">
-                                <p class="detail-label">Check-out:</p>
-                                <p>January 25, 2022</p>
-                            </div>
-                        </div>
-                        <!-- Add more booking details as needed -->
-                    </div>
-                </div>
+    <div class="form-container">
+        <h1>Edit Profile</h1>
+        <form action="#" method="post">
+            <div class="form-group">
+                <label for="full-name">Full Name <span class="required">*</span></label>
+                <input type="text" id="full-name" name="full-name" required>
             </div>
-        </div>
+            <div class="form-group">
+                <label for="gender">Gender</label>
+                <select id="gender" name="gender">
+                    <option value="male">Male</option>
+                    <option value="female">Female</option>
+                    <option value="other">Other</option>
+                </select>
+            </div>
+            <!-- Add more form groups for other fields -->
+            <!-- ... -->
+            <div class="form-group">
+                <label for="state">State</label>
+                <select id="state" name="state">
+                    <option value="state1">State 1</option>
+                    <option value="state2">State 2</option>
+                    <!-- Add more options for different states -->
+                </select>
+            </div>
+            <div class="button-group">
+                <button type="button" class="cancel-button">Cancel</button>
+                <button type="submit" class="save-button">SAVE</button>
+            </div>
+        </form>
     </div>
-
-    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-
 </body>
 
 </html>
