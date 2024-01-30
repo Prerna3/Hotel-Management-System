@@ -14,16 +14,21 @@ HOTELIVA | Profile
                     <!--Avatar-->
                     <div class="mb-3">
                         <div class="d-flex justify-content-center mb-4 avatar">
-                            <img id="selectedAvatar" src="{% static 'images/user1 (1).png' %}" class="rounded-circle"
-                                style="width: 200px; height: 200px; object-fit: cover;" alt="example placeholder" />
+                            {% if user and user.profile %}
+                            <img src="{% static 'images/user1 (1).png' %}" class="rounded-circle"
+                                style="width: 200px; height: 200px; object-fit: cover;" alt="profile_pic">
+                            {% else %}
+                            <img src="{{profile.profilePic.url}}" alt="Profile Avatar" class="rounded-circle"
+                                style="width: 200px; height: 200px; object-fit: cover;">
+                            {% endif %}
                         </div>
-                        <div class="d-flex justify-content-center edit">
+                        <!-- {% static 'images/user1 (1).png' %} -->
+                        <!-- <div class="d-flex justify-content-center edit">
                             <label class="form-label text-white m-1" for="customFile2"><img
                                     src="{% static 'images/edit.png' %}"></label>
-                            <!-- <input type="image" src="{% static 'images/edit (1).png' %}"> -->
                             <input type="file" class="form-control d-none" id="customFile2"
                                 onchange="displaySelectedImage(event, 'selectedAvatar')" />
-                        </div>
+                        </div> -->
                     </div>
                     <!-- <ul class="list-group">
                         <li class="list-group-item"><a href="#personal-details">Personal Details</a></li>
@@ -58,39 +63,245 @@ HOTELIVA | Profile
         <div class="col-md-8">
             <div id="personal-details" class="card mb-4">
                 <div class="card-body">
-                    <h3 class="card-title">Profile</h3>
-                    <p>Basic info, for a faster booking experience</p>
+                    <div class="row">
+                        <div class="col-md-9">
+                            <h3 class="card-title">Profile</h3>
+                            <p>Basic info, for a faster booking experience</p>
+                        </div>
+                        <div class="col-md-3">
+                            {% if is_current_user %}
+                            <a href="" data-bs-toggle="modal" data-bs-target="#editprofile"
+                                class="btn btn-primary editprofile"><i class="bi bi-pencil"></i> Edit Profile</a>
+                            {% endif %}
+                        </div>
+                    </div>
                     <!-- Add your user details form or information here -->
                     <table cellspacing="10px" cellpadding="10px">
                         <tr>
                             <td>NAME</td>
-                            <td>{{name}}</td>
+                            <td>
+                                {% if user and user.profile %}
+                                <a href="#" data-bs-toggle="modal" data-bs-target="#profile">
+                                    <i class="bi bi-plus"></i>Add</a>
+                                {% else %}
+                                {{ profile.name }}
+                                {% endif %}
+                            </td>
                         </tr>
                         <tr>
                             <td>BIRTHDAY</td>
-                            <td>03/05/01</td>
+                            <td>
+                                {% if user and user.profile %}
+                                <a href="#" data-bs-toggle="modal" data-bs-target="#profile">
+                                    <i class="bi bi-plus"></i>Add</a>
+                                {% else %}
+                                {{ profile.dob }}
+                                {% endif %}
+                            </td>
                         </tr>
                         <tr>
                             <td>GENDER</td>
-                            <td>{{gender}}</td>
+                            <td>
+                                {% if user and user.profile %}
+                                <a href="#" data-bs-toggle="modal" data-bs-target="#profile">
+                                    <i class="bi bi-plus"></i>Add</a>
+                                {% else %}
+                                {{ profile.gender }}
+                                {% endif %}
+                            </td>
                         </tr>
                         <tr>
                             <td>ADDRESS</td>
-                            <td>{{address}}</td>
+                            <td>
+                                {% if user and user.profile %}
+                                <a href="#" data-bs-toggle="modal" data-bs-target="#profile">
+                                    <i class="bi bi-plus"></i>Add</a>
+                                {% else %}
+                                {{ profile.address }}
+                                {% endif %}
+                            </td>
                         </tr>
                         <tr>
                             <td>PINCODE</td>
-                            <td>{{pincode}}</td>
+                            <td>
+                                {% if user and user.profile %}
+                                <a href="#" data-bs-toggle="modal" data-bs-target="#profile">
+                                    <i class="bi bi-plus"></i>Add</a>
+                                {% else %}
+                                {{ profile.pincode }}
+                                {% endif %}
+                            </td>
                         </tr>
                         <tr>
                             <td>STATE</td>
-                            <td>{{state}}</td>
+                            <td>
+                                {% if user and user.profile %}
+                                <a href="#" data-bs-toggle="modal" data-bs-target="#profile">
+                                    <i class="bi bi-plus"></i>Add</a>
+                                {% else %}
+                                {{ profile.state }}
+                                {% endif %}
+                            </td>
                         </tr>
                     </table>
                     <!-- Add more details as needed -->
                 </div>
             </div>
+            <div class="modal fade" id="profile" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h1 class="modal-title fs-5" id="exampleModalLabel">Create Profile</h1>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <form method="post" enctype="multipart/form-data" action="{% url 'createprofile' %}">
+                                {% csrf_token %}
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label for="name" class="form-label">Full Name</label>
+                                            <input type="text" class="form-control" id="name" name="name">
+                                        </div><br>
+                                        <div class="form-group">
+                                            <label for="gender" class="form-label">Gender</label>
+                                            <select id="gender" name="gender" class="form-control">
+                                                <option value="select"></option>
+                                                <option value="Male">Male</option>
+                                                <option value="Female">Female</option>
+                                                <option value="Other">Other</option>
+                                            </select>
+                                        </div><br>
+                                        <div class="form-group">
+                                            <label for="address" class="form-label">Address</label>
+                                            <textarea class="form-control" id="address" name="address"></textarea>
+                                        </div><br>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label for="dob" class="form-label">Birthday</label>
+                                            <input type="date" class="form-control" id="dob" name="dob">
+                                        </div><br>
+                                        <div class="form-group">
+                                            <label for="pincode" class="form-label">Pincode</label>
+                                            <input type="text" class="form-control" id="pincode" name="pincode">
+                                        </div><br>
+                                        <div class="form-group">
+                                            <label for="state" class="form-label">State</label>
+                                            <select id="state" name="state" class="form-control">
+                                                <option value="select"></option>
+                                                <option value="Maharashtra">Maharashtra</option>
+                                                <option value="Gujrat">Gujarat</option>
+                                                <option value="Rajasthar">Rajasthan</option>
+                                                <option value="Delhi">Delhi</option>
+                                                <option value="Goa">Goa</option>
+                                                <option value="Tamil Nadu">Tamil Nadu</option>
+                                                <option value="Uttar Pradesh">Uttar Pradesh</option>
+                                                <option value="Karnataka">Karnataka</option>
+                                                <option value="Assam">Assam</option>
+                                                <option value="West Bengal">West Bengal</option>
+                                                <option value="Madhya Pradesh">Madhya Pradesh</option>
+                                            </select>
+                                        </div><br>
+                                        <div class="form-group">
+                                            <label for="profilePic" class="form-label">Profile Picture:</label>
+                                            <input type="file" id="profilePic" name="profilePic" class="form-control">
+                                        </div><br>
+                                        <div class="form-group">
+                                            <button type="button" class="btn btn-secondary"
+                                                data-bs-dismiss="modal">Cancel</button>
+                                            <button type="submit" class="btn btn-primary">SAVE</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal fade" id="editprofile" tabindex="-1" aria-labelledby="exampleModalLabel"
+                aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h1 class="modal-title fs-5" id="exampleModalLabel">Edit Profile</h1>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <form method="post" enctype="multipart/form-data"
+                                action="{% url 'editprofile' profile.user%}">
+                                {% csrf_token %}
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label for="name" class="form-label">Full Name</label>
+                                            <input type="text" class="form-control" id="name" name="name"
+                                                value="{{ profile.name }}">
+                                        </div><br>
+                                        <div class="form-group">
+                                            <label for="gender" class="form-label">Gender</label>
+                                            <select id="gender" name="gender" class="form-control">
+                                                <option value="{{ profile.gender }}">{{ profile.gender }}</option>
+                                                <option value="select"></option>
+                                                <option value="Male">Male</option>
+                                                <option value="Female">Female</option>
+                                                <option value="Other">Other</option>
+                                            </select>
+                                        </div><br>
+                                        <div class="form-group">
+                                            <label for="address" class="form-label">Address</label>
+                                            <textarea class="form-control" id="address" name="address">
+                                                {{ profile.address }}
+                                            </textarea>
+                                        </div><br>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label for="dob" class="form-label">Birthday</label>
+                                            <input type="date" class="form-control" id="dob" name="dob"
+                                                value="{{ profile.dob }}">
+                                        </div><br>
+                                        <div class="form-group">
+                                            <label for="pincode" class="form-label">Pincode</label>
+                                            <input type="text" class="form-control" id="pincode" name="pincode"
+                                                value="{{ profile.pincode }}">
+                                        </div><br>
+                                        <div class="form-group">
+                                            <label for="state" class="form-label">State</label>
+                                            <select id="state" name="state" class="form-control">
+                                                <option value="{{ profile.state }}">{{ profile.state }}</option>
+                                                <option value="select"></option>
+                                                <option value="Maharashtra">Maharashtra</option>
+                                                <option value="Gujrat">Gujarat</option>
+                                                <option value="Rajasthan">Rajasthan</option>
+                                                <option value="Delhi">Delhi</option>
+                                                <option value="Goa">Goa</option>
+                                                <option value="Tamil Nadu">Tamil Nadu</option>
+                                                <option value="Uttar Pradesh">Uttar Pradesh</option>
+                                                <option value="Karnataka">Karnataka</option>
+                                                <option value="Assam">Assam</option>
+                                                <option value="West Bengal">West Bengal</option>
+                                                <option value="Madhya Pradesh">Madhya Pradesh</option>
+                                            </select>
 
+                                        </div><br>
+                                        <div class="form-group">
+                                            <label for="profilePic" class="form-label">Profile Picture:</label>
+                                            <input type="file" id="profilePic" name="profilePic" class="form-control"
+                                                value="{{profile.profilePic}}">
+                                        </div><br>
+                                        <div class="form-group">
+                                            <button type="button" class="btn btn-secondary"
+                                                data-bs-dismiss="modal">Cancel</button>
+                                            <button type="submit" class="btn btn-primary">SAVE</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
             <div id="login-details" class="card">
                 <div class="card-body">
                     <h3 class="card-title">Login Details</h3>
@@ -99,15 +310,22 @@ HOTELIVA | Profile
                     <table cellspacing="10px" cellpadding="10px">
                         <tr>
                             <td>MOBILE NUMBER</td>
-                            <td>9082027740</td>
+                            <td>
+                                {% if user and user.profile %}
+                                <a href="#" data-bs-toggle="modal" data-bs-target="#profile">
+                                    <i class="bi bi-plus"></i>Add</a>
+                                {% else %}
+                                {{ profile.phoneNo }}
+                                {% endif %}
+                            </td>
                         </tr>
                         <tr>
                             <td>EMAIL ID</td>
-                            <td>abc@gmail.com</td>
+                            <td>{{user.email}}</td>
                         </tr>
                         <tr>
-                            <td>PASSWORD</td>
-                            <td>****</td>
+                            <td>Uername</td>
+                            <td>{{user.username}}</td>
                         </tr>
                     </table>
                 </div>

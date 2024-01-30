@@ -310,6 +310,31 @@
         /* tr {
             border-bottom: 1px solid black;
         } */
+        .hname,
+        .bookingdetail {
+            box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.3), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+        }
+
+        .hoteldetail {
+            margin-left: 30px;
+            margin-right: 20px;
+        }
+
+        .bookingdetail h5 {
+            margin-top: 10px;
+        }
+
+        .book-btn {
+            padding: 2px 30px;
+            background-image: linear-gradient(to right, rgb(50, 152, 235), rgb(33, 106, 224));
+            font-size: x-large;
+            margin: 10px 4px;
+        }
+
+        .editprofile {
+            background-image: linear-gradient(to right, rgb(50, 152, 235), rgb(33, 106, 224));
+            margin: 10px 4px;
+        }
     </style>
 </head>
 
@@ -333,21 +358,30 @@
                                 <a class="nav-link" aria-current="page" href="/viewHotel">Hotels</a>
                             </li>
                             <li class="nav-item">
+                                <a class="nav-link" aria-current="page" href="/myBooking">My Bookings</a>
+                            </li>
+                            {% if user.is_authenticated %}
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#"
+                                    id="navbarDropdown" role="button" aria-expanded="false">Hi {{user.username}}
+                                </a>
+                                <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                    {% if user and user.profile %}
+                                    <li><a class="dropdown-item" href="{% url 'profile' user.id %}">My Profile</a></li>
+                                    {% else %}
+                                    <li><a class="dropdown-item" href="{% url 'createprofile' %}">My Profile</a></li>
+                                    {% endif %}
+                                    <li><a class="dropdown-item" href="/logout">Logout</a></li>
+                                </ul>
+                            </li>
+                            {% else %}
+                            <li class="nav-item">
                                 <a class="nav-link" href="/login">Login</a>
                             </li>
                             <li class="nav-item">
                                 <a class="nav-link" href="/register">Register</a>
                             </li>
-
-                            <li class="nav-item dropdown">
-                                <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#"
-                                    id="navbarDropdown" role="button" aria-expanded="false">Hi User
-                                </a>
-                                <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                                    <li><a class="dropdown-item" href="/myProfile">My Profile</a></li>
-                                    <li><a class="dropdown-item" href="/logout">Logout</a></li>
-                                </ul>
-                            </li>
+                            {% endif %}
 
 
                         </ul>
@@ -364,11 +398,9 @@
         </div>
     </div>
     <div class="container">
-        <div class="row">
-            {% block body %}
+        {% block body %}
 
-            {% endblock %}
-        </div>
+        {% endblock %}
     </div>
     <div class="container-fluid">
         <div class="row footer">

@@ -4,8 +4,82 @@
 HOTELIVA | Rooms
 {% endblock %}
 {% block body %}
-
+<div class="col-md-12  mt-5 ">
+    <div id="carouselExampleAutoplaying" class="carousel slide" data-bs-ride="carousel">
+        <div class="carousel-inner">
+            <div class="carousel-item active">
+                <img src="{% static 'images/hotel1.jpg' %}" class="d-block w-100" alt="" height="350px">
+            </div>
+            <div class="carousel-item">
+                <img src="{% static 'images/hotel2.jpg' %}" class="d-block w-100" alt="" height="350px">
+            </div>
+            <div class="carousel-item">
+                <img src="{% static 'images/hotel3.jpg' %}" class="d-block w-100" alt="" height="350px">
+            </div>
+        </div>
+        <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleAutoplaying"
+            data-bs-slide="prev">
+            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Previous</span>
+        </button>
+        <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleAutoplaying"
+            data-bs-slide="next">
+            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Next</span>
+        </button>
+    </div>
+</div>
 <div class="row">
-    Hotel Room
+    <div class="col-md-3 mt-4 p-3">
+        <h5>Filter by Category</h5>
+        <hr>
+        <a href="/viewRoom">All</a><br>
+        <a href="/aclist">AC</a><br>
+        <a href="/nonaclist">Non-AC</a><br>
+        <a href="/kingroomlist">King</a><br>
+        <a href="/queenroomlist">Queen</a><br>
+        <a href="/singleroomlist">Single</a><br>
+        <a href="/twinroomlist">Twin</a><br>
+        <a href="/doubleroomlist">Double</a><br>
+        <a href="/doubledoubleroomlist">Double-Double</a>
+        <br><br><br>
+        <h5>Filter by Price</h5>
+        <hr>
+        <form method="POST" action="{% url 'range' %}">
+            {% csrf_token %}
+            <div class="mb-3">
+                <label for="Input1" class="form-label">Minimum</label>
+                <input type="text" class="form-control" name="min" id="Input1">
+            </div>
+            <div class="mb-3">
+                <label for="exampleInput2" class="form-label">Maximum</label>
+                <input type="text" class="form-control" name="max" id="exampleInput2">
+            </div>
+            <button type="submit" class="btn btn-primary">Submit</button>
+        </form>
+        <br><br>
+        <h5>Sort by Price</h5>
+        <hr>
+        <a href="/descpriceOrder">High to Low</a><br>
+        <a href="/priceOrder">Low to High</a>
+    </div>
+    <div class="col-md-9 mt-4 p-3">
+        <div class="row">
+            {% for x in rooms %}
+            <div class="col-md-4 mb-4">
+                <div class="card" style="width: 100%; margin: 0px;">
+                    <img src="{{x.roomImage.url}}" class="card-img-top" alt="image" width="100%" height="250px">
+                    <div class="card-body">
+                        <h5 class="card-title">{{x.room_name}}</h5>
+                        <p class="card-text">Max Capacity: {{x.max_capacity}} </p>
+                        <p class="card-text">{{x.ac_room}} </p>
+                        <p class="card-text">Price: ₹ {{x.room_price}} </p>
+                        <a href="/productDetails/{{x.product_id}}" class="btn btn-primary w-100">Book Room</a>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
 </div>
 {% endblock %}
