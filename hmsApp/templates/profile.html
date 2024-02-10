@@ -14,29 +14,19 @@ HOTELIVA | Profile
                     <!--Avatar-->
                     <div class="mb-3">
                         <div class="d-flex justify-content-center mb-4 avatar">
-                            {% if user and user.profile %}
+                            {% if not is_current_user %}
                             <img src="{% static 'images/user1 (1).png' %}" class="rounded-circle"
-                                style="width: 200px; height: 200px; object-fit: cover;" alt="profile_pic">
+                                style="width: 200px; height: 200px; object-fit: cover;" alt="">
+
                             {% else %}
-                            <img src="{{profile.profilePic.url}}" alt="Profile Avatar" class="rounded-circle"
+
+                            <img src="{{profile.profilePic.url}}" alt="" class="rounded-circle"
                                 style="width: 200px; height: 200px; object-fit: cover;">
                             {% endif %}
                         </div>
-                        <!-- {% static 'images/user1 (1).png' %} -->
-                        <!-- <div class="d-flex justify-content-center edit">
-                            <label class="form-label text-white m-1" for="customFile2"><img
-                                    src="{% static 'images/edit.png' %}"></label>
-                            <input type="file" class="form-control d-none" id="customFile2"
-                                onchange="displaySelectedImage(event, 'selectedAvatar')" />
-                        </div> -->
                     </div>
-                    <!-- <ul class="list-group">
-                        <li class="list-group-item"><a href="#personal-details">Personal Details</a></li>
-                        <li class="list-group-item"><a href="#booking-history">Booking History</a></li>
-                        
-                    </ul> -->
                     <nav class="sidebar">
-                        <a href="#personal-details">
+                        <a href="#personal-details" class="active">
                             <span>
                                 <i class="bi bi-person-fill"></i>
                                 <span>Profile </span>
@@ -48,12 +38,6 @@ HOTELIVA | Profile
                                 <span>Login Details</span>
                             </span>
                         </a>
-                        <a href="#booking-history">
-                            <span>
-                                <i class="uil uil-calender"></i>
-                                <span>Booking Details</span>
-                            </span>
-                        </a>
                     </nav>
                 </div>
             </div>
@@ -61,7 +45,7 @@ HOTELIVA | Profile
 
         <!-- Content Area -->
         <div class="col-md-8">
-            <div id="personal-details" class="card mb-4">
+            <div class="card mb-4" id="personal-details">
                 <div class="card-body">
                     <div class="row">
                         <div class="col-md-9">
@@ -72,76 +56,51 @@ HOTELIVA | Profile
                             {% if is_current_user %}
                             <a href="" data-bs-toggle="modal" data-bs-target="#editprofile"
                                 class="btn btn-primary editprofile"><i class="bi bi-pencil"></i> Edit Profile</a>
+                            {% else %}
+                            <a href="" data-bs-toggle="modal" data-bs-target="#profile"
+                                class="btn btn-primary createprofile"><i class="bi bi-plus"></i> Create Profile</a>
                             {% endif %}
                         </div>
                     </div>
                     <!-- Add your user details form or information here -->
-                    <table cellspacing="10px" cellpadding="10px">
+                    <table cellspacing="10px" cellpadding="10px" class="table ">
                         <tr>
                             <td>NAME</td>
-                            <td>
-                                {% if user and user.profile %}
-                                <a href="#" data-bs-toggle="modal" data-bs-target="#profile">
-                                    <i class="bi bi-plus"></i>Add</a>
-                                {% else %}
+                            <th>
                                 {{ profile.name }}
-                                {% endif %}
-                            </td>
+                            </th>
                         </tr>
                         <tr>
                             <td>BIRTHDAY</td>
-                            <td>
-                                {% if user and user.profile %}
-                                <a href="#" data-bs-toggle="modal" data-bs-target="#profile">
-                                    <i class="bi bi-plus"></i>Add</a>
-                                {% else %}
+                            <th>
                                 {{ profile.dob }}
-                                {% endif %}
-                            </td>
+
+                            </th>
                         </tr>
                         <tr>
                             <td>GENDER</td>
-                            <td>
-                                {% if user and user.profile %}
-                                <a href="#" data-bs-toggle="modal" data-bs-target="#profile">
-                                    <i class="bi bi-plus"></i>Add</a>
-                                {% else %}
+                            <th>
                                 {{ profile.gender }}
-                                {% endif %}
-                            </td>
+                            </th>
                         </tr>
                         <tr>
                             <td>ADDRESS</td>
-                            <td>
-                                {% if user and user.profile %}
-                                <a href="#" data-bs-toggle="modal" data-bs-target="#profile">
-                                    <i class="bi bi-plus"></i>Add</a>
-                                {% else %}
+                            <th>
                                 {{ profile.address }}
-                                {% endif %}
-                            </td>
+                            </th>
                         </tr>
                         <tr>
                             <td>PINCODE</td>
-                            <td>
-                                {% if user and user.profile %}
-                                <a href="#" data-bs-toggle="modal" data-bs-target="#profile">
-                                    <i class="bi bi-plus"></i>Add</a>
-                                {% else %}
+                            <th>
                                 {{ profile.pincode }}
-                                {% endif %}
-                            </td>
+
+                            </th>
                         </tr>
                         <tr>
                             <td>STATE</td>
-                            <td>
-                                {% if user and user.profile %}
-                                <a href="#" data-bs-toggle="modal" data-bs-target="#profile">
-                                    <i class="bi bi-plus"></i>Add</a>
-                                {% else %}
+                            <th>
                                 {{ profile.state }}
-                                {% endif %}
-                            </td>
+                            </th>
                         </tr>
                     </table>
                     <!-- Add more details as needed -->
@@ -149,7 +108,8 @@ HOTELIVA | Profile
             </div>
             <div class="modal fade" id="profile" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
                 <div class="modal-dialog">
-                    <div class="modal-content">
+                    <div class="modal-content" style=" background: linear-gradient(145deg, rgba(134, 129, 197, 0.8) 10%,
+                        rgba(178, 177, 227, 0.8) 35%, rgba( 54, 182, 224,0.8)100%);">
                         <div class="modal-header">
                             <h1 class="modal-title fs-5" id="exampleModalLabel">Create Profile</h1>
                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
@@ -176,6 +136,11 @@ HOTELIVA | Profile
                                             <label for="address" class="form-label">Address</label>
                                             <textarea class="form-control" id="address" name="address"></textarea>
                                         </div><br>
+                                        <div class="form-group">
+                                            <label for="phoneNo" class="form-label">Mobile No.</label>
+                                            <input type="text" class="form-control" id="phoneNo" name="phoneNo"
+                                                required>
+                                        </div>
                                     </div>
                                     <div class="col-md-6">
                                         <div class="form-group">
@@ -219,28 +184,30 @@ HOTELIVA | Profile
                     </div>
                 </div>
             </div>
+            {% if is_current_user %}
             <div class="modal fade" id="editprofile" tabindex="-1" aria-labelledby="exampleModalLabel"
                 aria-hidden="true">
                 <div class="modal-dialog">
-                    <div class="modal-content">
+                    <div class="modal-content"
+                        style="background: linear-gradient(145deg, rgba(134, 129, 197, 0.8) 10%, rgba(178, 177, 227, 0.8) 35%, rgba( 54, 182, 224,0.8)100%);">
                         <div class="modal-header">
                             <h1 class="modal-title fs-5" id="exampleModalLabel">Edit Profile</h1>
                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
                         <div class="modal-body">
                             <form method="post" enctype="multipart/form-data"
-                                action="{% url 'editprofile' profile.user%}">
+                                action="{% url 'editprofile' profile.user %}">
                                 {% csrf_token %}
                                 <div class="row">
                                     <div class="col-md-6">
                                         <div class="form-group">
                                             <label for="name" class="form-label">Full Name</label>
                                             <input type="text" class="form-control" id="name" name="name"
-                                                value="{{ profile.name }}">
+                                                value="{{ profile.name }}" required>
                                         </div><br>
                                         <div class="form-group">
                                             <label for="gender" class="form-label">Gender</label>
-                                            <select id="gender" name="gender" class="form-control">
+                                            <select id="gender" name="gender" class="form-control" required>
                                                 <option value="{{ profile.gender }}">{{ profile.gender }}</option>
                                                 <option value="select"></option>
                                                 <option value="Male">Male</option>
@@ -250,25 +217,30 @@ HOTELIVA | Profile
                                         </div><br>
                                         <div class="form-group">
                                             <label for="address" class="form-label">Address</label>
-                                            <textarea class="form-control" id="address" name="address">
+                                            <textarea class="form-control" id="address" name="address" required>
                                                 {{ profile.address }}
                                             </textarea>
+                                        </div><br>
+                                        <div class="form-group">
+                                            <label for="phoneNo" class="form-label">Mobile No.</label>
+                                            <input type="text" class="form-control" id="phoneNo" name="phoneNo"
+                                                value="{{ profile.phoneNo }}" required>
                                         </div><br>
                                     </div>
                                     <div class="col-md-6">
                                         <div class="form-group">
                                             <label for="dob" class="form-label">Birthday</label>
                                             <input type="date" class="form-control" id="dob" name="dob"
-                                                value="{{ profile.dob }}">
+                                                value="{{ profile.dob }}" required>
                                         </div><br>
                                         <div class="form-group">
                                             <label for="pincode" class="form-label">Pincode</label>
                                             <input type="text" class="form-control" id="pincode" name="pincode"
-                                                value="{{ profile.pincode }}">
+                                                value="{{ profile.pincode }}" required>
                                         </div><br>
                                         <div class="form-group">
                                             <label for="state" class="form-label">State</label>
-                                            <select id="state" name="state" class="form-control">
+                                            <select id="state" name="state" class="form-control" required>
                                                 <option value="{{ profile.state }}">{{ profile.state }}</option>
                                                 <option value="select"></option>
                                                 <option value="Maharashtra">Maharashtra</option>
@@ -288,7 +260,7 @@ HOTELIVA | Profile
                                         <div class="form-group">
                                             <label for="profilePic" class="form-label">Profile Picture:</label>
                                             <input type="file" id="profilePic" name="profilePic" class="form-control"
-                                                value="{{profile.profilePic}}">
+                                                value="{{profile.profilePic}}" required>
                                         </div><br>
                                         <div class="form-group">
                                             <button type="button" class="btn btn-secondary"
@@ -302,53 +274,28 @@ HOTELIVA | Profile
                     </div>
                 </div>
             </div>
+            {% endif %}
             <div id="login-details" class="card">
                 <div class="card-body">
                     <h3 class="card-title">Login Details</h3>
                     <!-- Add your booking history information here -->
                     <p>Manage your email address mobile number and password</p>
-                    <table cellspacing="10px" cellpadding="10px">
+                    <table cellspacing="10px" cellpadding="10px" class="table">
                         <tr>
                             <td>MOBILE NUMBER</td>
-                            <td>
-                                {% if user and user.profile %}
-                                <a href="#" data-bs-toggle="modal" data-bs-target="#profile">
-                                    <i class="bi bi-plus"></i>Add</a>
-                                {% else %}
+                            <th>
                                 {{ profile.phoneNo }}
-                                {% endif %}
-                            </td>
+                            </th>
                         </tr>
                         <tr>
                             <td>EMAIL ID</td>
-                            <td>{{user.email}}</td>
+                            <th>{{user.email}}</th>
                         </tr>
                         <tr>
                             <td>Uername</td>
-                            <td>{{user.username}}</td>
+                            <th>{{user.username}}</th>
                         </tr>
                     </table>
-                </div>
-            </div>
-            <div id="booking-history" class="card">
-                <div class="card-body">
-                    <h1 class="card-title">Booking History</h3>
-                        <div class="booking">
-                            <table cellspacing="10px" cellpadding="10px" class="">
-                                <tr>
-                                    <td>BOOKING ID</td>
-                                    <td>9082</td>
-                                </tr>
-                                <tr>
-                                    <td>HOTEL NAME</td>
-                                    <td>abc@gmail.com</td>
-                                </tr>
-                                <tr>
-                                    <td>DATE</td>
-                                    <td>15/1/24</td>
-                                </tr>
-                            </table>
-                        </div>
                 </div>
             </div>
         </div>

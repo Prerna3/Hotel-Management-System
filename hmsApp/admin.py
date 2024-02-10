@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Hotel, ImageGallery, Room, Booking, Profile
+from .models import Hotel, ImageGallery, Room, Profile, CheckAvailable
 
 
 # Register your models here.
@@ -25,19 +25,6 @@ class ImageGalleryAdmin(admin.ModelAdmin):
 admin.site.register(ImageGallery, ImageGalleryAdmin)
 
 
-class BookingAdmin(admin.ModelAdmin):
-    list_display = (
-        "room_id",
-        "check_in_date",
-        "check_out_date",
-        "num_guests",
-        "num_rooms",
-    )
-
-
-admin.site.register(Booking, BookingAdmin)
-
-
 class RoomAdmin(admin.ModelAdmin):
     list_display = (
         "hotel_id",
@@ -48,6 +35,8 @@ class RoomAdmin(admin.ModelAdmin):
         "max_capacity",
         "room_price",
         "roomImages",
+        "status",
+        "available",
     )
 
 
@@ -68,3 +57,17 @@ class ProfileAdmin(admin.ModelAdmin):
 
 
 admin.site.register(Profile, ProfileAdmin)
+
+
+class CheckAvailableAdmin(admin.ModelAdmin):
+    list_display = (
+        "user",
+        "room_id",
+        "check_in_date",
+        "check_out_date",
+        "num_guests",
+        "booking_id",
+    )
+
+
+admin.site.register(CheckAvailable, CheckAvailableAdmin)

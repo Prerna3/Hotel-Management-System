@@ -40,9 +40,9 @@ HOTELIVA | Home
                             <div class="card-body box">
                                 <h5 class="card-title">{{x.hotel_name}}</h5>
                                 <p class="card-text"> ₹{{x.price}} / Per Night</p>
-                                <p class="card-text">{{x.category}}</p>
-                                <p class="card-text">{{x.location}}</p>
-                                <a href="/viewHotel" class="btn btn-primary">View Details</a>
+                                <p class="card-text">{{x.category}} <i class="bi bi-star"></i></p>
+                                <p class="card-text"><i class="bi bi-geo-alt"></i> {{x.location}}</p>
+                                <a href="/viewRoom/{{x.hotel_id}}" class="btn btn-primary">View Rooms</a>
                             </div>
                         </div>
                     </div>
@@ -58,9 +58,9 @@ HOTELIVA | Home
                             <div class="card-body box">
                                 <h5 class="card-title">{{x.hotel_name}}</h5>
                                 <p class="card-text"> ₹{{x.price}} / Per Night</p>
-                                <p class="card-text">{{x.category}}</p>
-                                <p class="card-text">{{x.location}}</p>
-                                <a href="/viewHotel" class="btn btn-primary">View Details</a>
+                                <p class="card-text">{{x.category}} <i class="bi bi-star"></i></p>
+                                <p class="card-text"><i class="bi bi-geo-alt"></i> {{x.location}}</p>
+                                <a href="/viewRoom/{{x.hotel_id}}" class="btn btn-primary">View Rooms</a>
                             </div>
                         </div>
                     </div>
@@ -119,7 +119,7 @@ HOTELIVA | Home
                     <div class="col-md-4">
                         <div class="card-body box" style="width: 100%;">
                             <img src="static/images/Hotels-Mahabaleshwar.webp." alt="image" width="100%" height="250px">
-                            <div class="overlay-text">Mahabaleshwar</div>
+                            <div class="overlay-text">Goa</div>
                         </div>
                     </div>
                     <div class="col-md-4">

@@ -1,28 +1,43 @@
 {% extends 'base.html' %}
 {% load static %}
 {% block title %}
-HOTELIVA | Home
+HOTELIVA | My Booking
 {% endblock %}
 {% block body %}
 <div id="booking-history" class="card">
     <div class="card-body">
         <h1 class="card-title">Booking History</h3>
+            {% for each_booking in bookings %}
             <div class="booking">
                 <table cellspacing="10px" cellpadding="10px" class="">
                     <tr>
-                        <td>BOOKING ID</td>
-                        <td>9082</td>
+                        <th>Booking Id</th>
+                        <td>{{each_booking.booking_id}}</td>
+                        <th>HOTEL NAME</th>
+                        <td>{{each_booking.room.hotel.hotel_name}}</td>
                     </tr>
                     <tr>
-                        <td>HOTEL NAME</td>
-                        <td>abc@gmail.com</td>
+                        <th>Room No.</th>
+                        <td>{{each_booking.room.room_id}}</td>
+                        <th>Location</th>
+                        <td>{{each_booking.room.hotel.location}}</td>
                     </tr>
                     <tr>
-                        <td>DATE</td>
-                        <td>15/1/24</td>
+                        <th>Check-in Date</th>
+                        <td>{{each_booking.check_in_date}}</td>
+                        <th>Check-out Date</th>
+                        <td>{{each_booking.check_out_date}}</td>
+                    </tr>
+
+                    <tr>
+                        <th>Total Guest</th>
+                        <td>{{each_booking.num_guests}}</td>
+                        <th>Total Price</th>
+                        <td>{{each_booking.room.room_price}}</td>
                     </tr>
                 </table>
             </div>
+            {% endfor %}
     </div>
 </div>
 {% endblock %}
