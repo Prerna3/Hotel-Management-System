@@ -8,11 +8,17 @@
     <title>{% block title %} {% endblock %}</title>
     <link rel="stylesheet" href="{% static 'css/bootstrap.min.css'%}">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.2/font/bootstrap-icons.min.css">
+    <!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
     <link rel="stylesheet" href="https://unicons.iconscout.com/release/v4.0.0/css/line.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css">
+    <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/css/bootstrap-datepicker.min.css"> -->
+
     <script src="{% static 'js/bootstrap.min.js' %}"></script>
     <style>
         body {
-            background-color: rgb(250, 250, 250);
+            /* background-color: rgb(250, 250, 250); */
+            background: linear-gradient(145deg, rgba(134, 129, 197, 0.8) 10%, rgba(178, 177, 227, 0.8) 35%, rgba(123, 193, 216, 0.8)100%);
         }
 
         .container-fluid {
@@ -63,7 +69,7 @@
         }
 
         .x {
-            border-right: 1px solid rgb(194, 194, 194);
+            /* border-right: 1px solid rgb(194, 194, 194); */
             padding: 10px 20px;
         }
 
@@ -183,10 +189,6 @@
             text-decoration: none;
         }
 
-        /* .leftbar {
-            position: sticky;
-            top: 15px;
-        } */
 
         .sidebar {
             display: flex;
@@ -335,6 +337,24 @@
             background-image: linear-gradient(to right, rgb(50, 152, 235), rgb(33, 106, 224));
             margin: 10px 4px;
         }
+
+        .createprofile {
+            background-image: linear-gradient(to right, rgb(50, 152, 235), rgb(33, 106, 224));
+            margin: 10px 0px;
+        }
+
+        .filter a {
+            text-decoration: none;
+            color: #000000;
+        }
+
+        .filter a:hover {
+            color: blue;
+        }
+
+        .room {
+            box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.3), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+        }
     </style>
 </head>
 
@@ -353,9 +373,6 @@
                         <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                             <li class="nav-item">
                                 <a class="nav-link active" aria-current="page" href="/">Home</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" aria-current="page" href="/viewHotel">Hotels</a>
                             </li>
                             <li class="nav-item">
                                 <a class="nav-link" aria-current="page" href="/myBooking">My Bookings</a>
@@ -385,18 +402,20 @@
 
 
                         </ul>
-                        <form class="d-flex" role="search" method="post" action="">
-                            {% csrf_token %}
-                            <input class="form-control me-2" type="search" name="q" placeholder="Search"
-                                aria-label="Search">
-                            <button class="btn btn-outline-success" type="submit">Search</button>
-                        </form>
                     </div>
                 </div>
 
             </nav>
         </div>
     </div>
+    {% if messages %}
+    {% for message in messages %}
+    <div class="alert alert-warning alert-dismissible fade show" role="alert">
+        {{ message }}
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+    {% endfor %}
+    {% endif %}
     <div class="container">
         {% block body %}
 
@@ -439,7 +458,7 @@
             </div>
         </div>
     </div>
-    <script>
+    <!-- <script>
         function displaySelectedImage(event, elementId) {
             const selectedImage = document.getElementById(elementId);
             const fileInput = event.target;
@@ -457,14 +476,66 @@
         /* $("input[type='image']").click(function () {
             $("input[id='customFile2']").click();
         }); */
-    </script>
+    </script> -->
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"
         integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r"
         crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.min.js"
         integrity="sha384-BBtl+eGJRgqQAUMxJ7pMwbEyER4l1g+O15P+16Ep7Q9Q+zqX6gSbd85u4mG4QzX+"
         crossorigin="anonymous"></script>
+    <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script
+        src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.10.0/js/bootstrap-datepicker.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/js/all.min.js"
+        crossorigin="anonymous"></script>
+    <script>
+        var nowTemp = new Date();
+        var now = new Date(nowTemp.getFullYear(), nowTemp.getMonth(), nowTemp.getDate(), 0, 0, 0, 0);
 
+        var checkin = $('#dp1').datepicker({
+
+            beforeShowDay: function (date) {
+                return date.valueOf() >= now.valueOf();
+            },
+            autoclose: true
+
+        }).on('changeDate', function (ev) {
+            if (ev.date.valueOf() > checkout.datepicker("getDate").valueOf() || !checkout.datepicker("getDate").valueOf()) {
+
+                var newDate = new Date(ev.date);
+                newDate.setDate(newDate.getDate() + 1);
+                checkout.datepicker("update", newDate);
+
+            }
+            $('#dp2')[0].focus();
+        });
+
+
+        var checkout = $('#dp2').datepicker({
+            beforeShowDay: function (date) {
+                if (!checkin.datepicker("getDate").valueOf()) {
+                    return date.valueOf() >= new Date().valueOf();
+                } else {
+                    return date.valueOf() > checkin.datepicker("getDate").valueOf();
+                }
+            },
+            autoclose: true
+
+        }).on('changeDate', function (ev) { });
+    </script>
+    <script>
+        function checkAvailability() {
+            var checkInDate = new Date(document.getElementById("dp1").value);
+            var checkOutDate = new Date(document.getElementById("dp2").value);
+
+            if (checkInDate && checkOutDate && checkInDate < checkOutDate) {
+                // Here you would perform the availability check, and display appropriate message
+                document.getElementById("availabilityMessage").textContent = "Rooms are available for the selected dates!";
+            } else {
+                document.getElementById("availabilityMessage").textContent = "Please select valid dates.";
+            }
+        }
+    </script> -->
 </body>
 
 </html>

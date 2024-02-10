@@ -12,7 +12,8 @@
     <style>
         body {
             /* background-color: #F0D2C7; */
-            background-image: linear-gradient(to right, rgb(241, 30, 30), rgb(224, 33, 81));
+            background: linear-gradient(145deg, rgba(134, 129, 197, 0.8) 10%, rgba(178, 177, 227, 0.8) 35%, rgba(54, 182, 224, 0.8)100%);
+
         }
 
         .div1,
@@ -79,7 +80,7 @@
                 <h4 class="text-center">Sign Up</h4>
 
                 <!-- <h5>Login</h5><br> -->
-                <form method="POST" action="{% url 'index' %}">
+                <form method="POST">
                     {% csrf_token %}
                     {% for field in form %}
                     {{field.label}}<br>

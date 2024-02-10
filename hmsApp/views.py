@@ -2,21 +2,27 @@ from django.shortcuts import render, redirect, HttpResponse, get_object_or_404
 from django.contrib.auth import login, logout, authenticate
 from .forms import CreateUserForm
 from django.contrib import messages
-from .models import Hotel, Room, Booking, Profile
+from .models import Hotel, Room, Profile, ImageGallery, CheckAvailable
 from django.contrib.auth.models import User
+from django.db.models import Q
+import razorpay
+import random
+import datetime
 
 
 # Create your views here.
 def index(req):
     hotels = Hotel.objects.all()
-    first_three_hotels = Hotel.objects.all()[:3]
-
+    # first_three_hotels = Hotel.objects.all()[:3]
+    topRated = Hotel.objects.filter(category__in=["5 Star", "4 Star"])
+    first_three_hotels = topRated[:3]
     # Query the next three hotels from the database
-    next_three_hotels = Hotel.objects.all()[3:6]
+    next_three_hotels = topRated[3:6]
     # locations = Hotel.objects.filter()
     context = {
         "hotels": hotels,
         "first_three_hotels": first_three_hotels,
+        "topRated": topRated,
         "next_three_hotels": next_three_hotels,
     }
 
@@ -31,30 +37,140 @@ def viewHotel(req):
 
 
 def search(req):
-    if req.method == "GET":
-        return redirect("/")
+    query = req.POST["loc"]
+    print(f"Query is {query}")
+    if not query:
+        result = Hotel.objects.all()
     else:
-        loc = req.POST.get("loc")
-        if loc:
-            queryset = Hotel.prod.get_location(loc)
-            print(queryset)
-            context = {
-                "hotels": queryset,
-                "loc": loc,
-            }
-            return render(req, "viewHotel.html", context)
-        else:
-            return redirect("/")
+        result = Hotel.objects.filter(Q(location__icontains=query))
+    return render(req, "viewHotel.html", {"results": result, "query": query})
 
 
-def viewRoom(req):
-    # hotels = Hotel.objects.get(hotel_id=rid)
-    rooms = Room.objects.all()
+def viewRoom(req, hid):
+    hotels = Hotel.objects.get(hotel_id=hid)
+    rooms = Room.objects.filter(hotel_id=hid)
+    gallery = ImageGallery.objects.filter(hotel_id=hid)
     context = {
-        # "hotels": hotels,
+        "hotels": hotels,
         "rooms": rooms,
+        "gallery": gallery,
     }
     return render(req, "viewRoom.html", context)
+
+
+def book_room_page(request):
+    user = request.user if request.user.is_authenticated else None
+    if user:
+        room = Room.objects.all().get(room_id=int(request.GET["room_id"]))
+        name = Profile.objects.all().get(user=user)
+    else:
+        return redirect("/login")
+
+    return HttpResponse(render(request, "cart.html", {"room": room, "name": name}))
+
+
+def book_room(request):
+    if request.method == "POST":
+        # room_id = Room.objects.get(room_id=rid)
+        roomid = request.POST["room_id"]
+        room = Room.objects.all().get(room_id=roomid)
+        # for finding the reserved rooms on this time period for excluding from the query set
+        for each_reservation in CheckAvailable.objects.all().filter(room=room):
+            if str(each_reservation.check_in_date) < str(
+                request.POST["check_in"]
+            ) and str(each_reservation.check_out_date) < str(request.POST["check_out"]):
+                pass
+            elif str(each_reservation.check_in_date) > str(
+                request.POST["check_in"]
+            ) and str(each_reservation.check_out_date) > str(request.POST["check_out"]):
+                pass
+            else:
+                messages.warning(request, "Sorry This Room is unavailable for Booking")
+                return redirect("check_room_availability", rid=roomid)
+
+        current_user = request.user
+        total_person = int(request.POST["person"])
+        booking_id = str(roomid) + str(datetime.datetime.now())
+
+        checkAvailable = CheckAvailable()
+        room_object = Room.objects.all().get(room_id=roomid)
+        room_object.status = "2"
+
+        user_object = User.objects.all().get(username=current_user)
+
+        checkAvailable.user = user_object
+        checkAvailable.room = room_object
+        person = total_person
+        checkAvailable.num_guests = person
+        checkAvailable.check_in_date = request.POST["check_in"]
+        checkAvailable.check_out_date = request.POST["check_out"]
+        checkAvailable.booking_id = booking_id
+
+        checkAvailable.save()
+
+        messages.success(request, "Congratulations! Booking Successfull")
+
+        return redirect("/payment")
+    else:
+        return HttpResponse("Access Denied")
+
+
+def makePayment(req):
+    checkAvail = CheckAvailable.objects.filter(user=req.user)
+    total_price = 0
+    for x in checkAvail:
+        total_price = x.room.room_price
+        booking_id = x.booking_id
+    client = razorpay.Client(
+        auth=("rzp_test_sUTZ37PTI6oDaZ", "81iQLqkJ2a10ceOpuTfHHSG2")
+    )
+    data = {"amount": total_price * 100, "currency": "INR", "receipt": booking_id}
+    payment = client.order.create(data=data)
+    context = {}
+    context["data"] = payment
+    context["amount"] = payment["amount"]
+    # booking.update(is_completed=True)
+    return render(req, "payment.html", context)
+
+
+def check_room_availability(request, rid):
+    room = Room.objects.filter(room_id=rid)
+    if request.method == "POST":
+        try:
+            print(request.POST)
+            rr = []
+            # for finding the reserved rooms on this time period for excluding from the query set
+            for each_reservation in CheckAvailable.objects.all():
+                if str(each_reservation.check_in_date) < str(
+                    request.POST["cin"]
+                ) and str(each_reservation.check_out_date) < str(request.POST["cout"]):
+                    pass
+                elif str(each_reservation.check_in_date) > str(
+                    request.POST["cin"]
+                ) and str(each_reservation.check_out_date) > str(request.POST["cout"]):
+                    pass
+                else:
+                    rr.append(each_reservation.room.room_id)
+
+            room = (
+                Room.objects.all()
+                .filter(room_id=rid, max_capacity__gte=int(request.POST["capacity"]))
+                .exclude(room_id__in=rr)
+            )
+            if len(room) == 0:
+                messages.warning(
+                    request, "Sorry No Rooms Are Available on this time period"
+                )
+            data = {"rooms": room, "flag": True}
+            response = render(request, "checkAvailability.html", data)
+        except Exception as e:
+            messages.error(request, e)
+            response = render(request, "checkAvailability.html", {"room": room})
+
+    else:
+        data = {"room": room}
+        response = render(request, "checkAvailability.html", data)
+    return HttpResponse(response)
 
 
 def profile(req, user_id):
@@ -86,6 +202,7 @@ def createProfile(request):
             pincode = request.POST["pincode"]
             state = request.POST["state"]
             address = request.POST["address"]
+            phoneNo = request.POST["phoneNo"]
             Profile.objects.create(
                 user=user,
                 name=name,
@@ -95,6 +212,7 @@ def createProfile(request):
                 pincode=pincode,
                 state=state,
                 address=address,
+                phoneNo=phoneNo,
             )
             return redirect("profile", user_id=user.id)
         else:
@@ -114,6 +232,7 @@ def editProfile(request, user):
         pincode = request.POST["pincode"]
         state = request.POST["state"]
         address = request.POST["address"]
+        phoneNo = request.POST["phoneNo"]
         if name:
             profile.name = name
         if gender:
@@ -128,6 +247,8 @@ def editProfile(request, user):
             profile.state = state
         if address:
             profile.address = address
+        if phoneNo:
+            profile.phoneNo = phoneNo
         profile.save()
         return redirect("profile", user_id=user.id)
 
@@ -149,82 +270,104 @@ def range(req):
             return redirect("/viewRoom")
 
 
-def aclist(req):
+def aclist(req, hid):
     if req.method == "GET":
-        queryset = Room.prod.aclist()
+        hotels = Hotel.objects.get(hotel_id=hid)
+        queryset = Room.prod.aclist(hid)
         context = {}
         context["rooms"] = queryset
+        context["hotels"] = hotels
         return render(req, "viewRoom.html", context)
 
 
-def nonaclist(req):
+def nonaclist(req, hid):
     if req.method == "GET":
-        queryset = Room.prod.nonaclist()
+        hotels = Hotel.objects.get(hotel_id=hid)
+        queryset = Room.prod.nonaclist(hid)
         context = {}
         context["rooms"] = queryset
+        context["hotels"] = hotels
         return render(req, "viewRoom.html", context)
 
 
-def kingroomlist(req):
+def kingroomlist(req, hid):
     if req.method == "GET":
-        queryset = Room.prod.kingroomlist()
+        hotels = Hotel.objects.get(hotel_id=hid)
+        queryset = Room.prod.kingroomlist(hid)
         context = {}
         context["rooms"] = queryset
+        context["hotels"] = hotels
         return render(req, "viewRoom.html", context)
 
 
-def queenroomlist(req):
+def queenroomlist(req, hid):
     if req.method == "GET":
-        queryset = Room.prod.queenroomlist()
+        hotels = Hotel.objects.get(hotel_id=hid)
+        queryset = Room.prod.queenroomlist(hid)
         context = {}
         context["rooms"] = queryset
+        context["hotels"] = hotels
         return render(req, "viewRoom.html", context)
 
 
-def twinroomlist(req):
+def twinroomlist(req, hid):
     if req.method == "GET":
-        queryset = Room.prod.twinroomlist()
+        hotels = Hotel.objects.get(hotel_id=hid)
+        queryset = Room.prod.twinroomlist(hid)
         context = {}
         context["rooms"] = queryset
+        context["hotels"] = hotels
         return render(req, "viewRoom.html", context)
 
 
-def singleroomlist(req):
+def singleroomlist(req, hid):
     if req.method == "GET":
-        queryset = Room.prod.singleroomlist()
+        hotels = Hotel.objects.get(hotel_id=hid)
+        queryset = Room.prod.singleroomlist(hid)
         context = {}
         context["rooms"] = queryset
+        context["hotels"] = hotels
         return render(req, "viewRoom.html", context)
 
 
-def doubleroomlist(req):
+def doubleroomlist(req, hid):
     if req.method == "GET":
-        queryset = Room.prod.doubleroomlist()
+        hotels = Hotel.objects.get(hotel_id=hid)
+        queryset = Room.prod.doubleroomlist(hid)
         context = {}
         context["rooms"] = queryset
+        context["hotels"] = hotels
         return render(req, "viewRoom.html", context)
 
 
-def doubledoubleroomlist(req):
+def doubledoubleroomlist(req, hid):
     if req.method == "GET":
-        queryset = Room.prod.doubledoubleroomlist()
+        hotels = Hotel.objects.get(hotel_id=hid)
+        queryset = Room.prod.doubledoubleroomlist(hid)
         context = {}
         context["rooms"] = queryset
+        context["hotels"] = hotels
         return render(req, "viewRoom.html", context)
 
 
-def priceOrder(req):
-    queryset = Room.objects.all().order_by("room_price")
-    context = {}
-    context["rooms"] = queryset
-    return render(req, "viewRoom.html", context)
+def priceOrder(req, hid):
+    if req.method == "GET":
+        hotels = Hotel.objects.get(hotel_id=hid)
+        queryset = Room.objects.filter(hotel_id=hid).order_by("room_price")
+        context = {}
+        context["rooms"] = queryset
+        context["hotels"] = hotels
+        return render(req, "viewRoom.html", context)
 
 
-def descpriceOrder(req):
-    queryset = Room.objects.all().order_by("-room_price")
-    context = {}
-    context["rooms"] = queryset
-    return render(req, "viewRoom.html", context)
+def descpriceOrder(req, hid):
+    if req.method == "GET":
+        hotels = Hotel.objects.get(hotel_id=hid)
+        queryset = Room.objects.filter(hotel_id=hid).order_by("-room_price")
+        context = {}
+        context["rooms"] = queryset
+        context["hotels"] = hotels
+        return render(req, "viewRoom.html", context)
 
 
 def register_user(req):
@@ -234,7 +377,7 @@ def register_user(req):
         if form.is_valid():
             form.save()
             messages.success(req, ("User created successfully"))
-            return redirect("/")
+            return redirect("/login")
         else:
             messages.error(req, ("Incorrect Username or Password Format"))
     context = {"form": form}
@@ -251,7 +394,7 @@ def login_user(req):
             messages.success(req, ("Logged in Successfully"))
             return redirect("/")
         else:
-            messages.error(req, ("There is error"))
+            messages.error(req, ("Incorrect Username or Password"))
             return redirect("/login")
     else:
         return render(req, "login.html")
@@ -264,4 +407,11 @@ def logout_user(req):
 
 
 def myBooking(req):
-    return render(req, "myBooking.html")
+    if req.user.is_authenticated == False:
+        return redirect("login")
+    user = User.objects.all().get(id=req.user.id)
+    print(f"request user id ={req.user.id}")
+    bookings = CheckAvailable.objects.all().filter(user=user)
+    if not bookings:
+        messages.warning(req, "No Bookings Found")
+    return render(req, "myBooking.html", {"bookings": bookings})

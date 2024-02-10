@@ -15,17 +15,16 @@ HOTELIVA | Hotels
                     <input type="text" class="form-control search-input-1" id="loc" name="loc"
                         placeholder="Mumbai, Delhi..." required>
                 </div>
-
                 <div class="mt-4 p-2" style="margin-left: 42%;">
-                    <button type="button" class="btn btn-primary search-button">Search</button>
+                    <button type="submit" class="btn btn-primary search-button">Search</button>
                 </div>
             </div>
         </form>
     </div>
 </div>
 <br>
-<h1>Search Results for {{ loc }}</h1>
-{% for hotel in hotels %}
+<h1>Search Results for {{ query }}</h1>
+{% for hotel in results %}
 <div class="row mt-3 p-2 mb-3 hotel">
     <div class="col-md-4 mt-3 p-3">
         <img src="{{ hotel.image.url }}" class="card-img-top" alt="image" width="100%" height="250px">
@@ -33,15 +32,15 @@ HOTELIVA | Hotels
     <div class="col-md-8 mt-3 p-3">
         <div class="card-body">
             <h5 class="card-title">{{ hotel.hotel_name }}</h5>
-            <p class="card-text">{{ hotel.desc }}</p>
-            <p class="card-text">{{ hotel.category }}</p>
+            <p class="card-text">{{ hotel.desc }} | <i class="bi bi-geo-alt"></i> {{hotel.location}}</p>
+            <p class="card-text">{{ hotel.category }} <i class="bi bi-star"></i></p>
             <p class="card-text">₹{{ hotel.price }} / Per Night</p>
             <p class="card-text">8.9 - Excellent (2839 reviews)</p>
         </div>
         <br>
-        <a href="/viewRoom"><button type="button" class="btn btn-primary">View Rooms</button></a>
+        <a href="{% url 'viewRoom' hotel.hotel_id %}"><button type="button" class="btn btn-primary">View
+                Rooms</button></a>
         <a href="/"><button type="button" class="btn btn-primary">Back</button></a>
-        <!-- href="/viewRoom/{{hotel.hotel_id}}" -->
     </div>
 </div>
 {% endfor %}

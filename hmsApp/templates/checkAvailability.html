@@ -1,0 +1,64 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}
+HOTELIVA | My Booking
+{% endblock %}
+{% block body %}
+
+<section>
+    <div class="container-fluid p-5 ">
+        <form action="" method="POST">
+            {% csrf_token %}
+            <div class="row justify-content-center py-5 bg-light">
+                {%load app_tags%}
+                <div class="col-lg-3">
+                    <label for="">Check in</label>
+                    <input class="form-control mr-sm-2" type="date" placeholder="Check in" name="cin"
+                        min={%todays_date%} max={%max_date%} aria-label="Search" required="True">
+                </div>
+                <div class="col-lg-3">
+                    <label for="">Check Out</label>
+                    <input class="form-control mr-sm-2" type="date" placeholder="Check out" name="cout" min={%tommorow%}
+                        max={%max_date%} aria-label="Search" required="True">
+                </div>
+                <div class="col-lg-3">
+                    <label for="">Person</label>
+                    <input class="form-control mr-sm-2" type="number" placeholder="Person" name="capacity"
+                        aria-label="Search" required="True">
+                </div>
+                <div class="col-lg-3">
+
+                    <input type="submit" value="Check Availabilty" class="form-control mr-sm-2 btn btn-primary my-4"
+                        style="position: relative;">
+                </div>
+
+            </div>
+        </form>
+
+        {% if rooms %}
+        <p class="text-center text-success">Rooms Available</p>
+        {% for x in rooms %}
+        <div class="row">
+            <div class="col-md-6 mt-3 p-3">
+                <img src="{{x.roomImage.url}}" class="card-img-top room" alt="image" width="100%" height="250px">
+            </div>
+            <div class="col-md-6 mt-3 p-3">
+                <div class="card-body">
+                    <h5 class="card-title">{{x.room_name}}</h5>
+                    <p class="card-text"><i class="bi bi-geo-alt"></i> {{x.hotel.location}}</p>
+                    <p class="card-text"><small>For {{x.max_capacity}} Guest</small></p>
+                    <p class="card-text">{{x.ac_room}} </p>
+                    <p class="card-text"><b>₹ {{x.room_price}}</b> / Per Night</p>
+                </div>
+                <br>
+                <a href="/book-room?room_id={{x.room_id}}"><button type="button" class="btn btn-danger">Book
+                        Room</button></a>
+                <a href="/"><button type="button" class="btn btn-primary">Back</button></a>
+            </div>
+        </div>
+        {% endfor %}
+        {% endif %}
+    </div>
+</section>
+
+{% endblock %}
