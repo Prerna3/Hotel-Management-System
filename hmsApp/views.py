@@ -8,6 +8,9 @@ from django.db.models import Q
 import razorpay
 import random
 import datetime
+from django.core.mail import send_mail, EmailMultiAlternatives
+from django.utils.html import strip_tags
+from django.template.loader import render_to_string
 
 
 # Create your views here.
@@ -108,7 +111,7 @@ def book_room(request):
 
         checkAvailable.save()
 
-        messages.success(request, "Congratulations! Booking Successfull")
+        # messages.success(request, "Congratulations! Booking Successfull")
 
         return redirect("/payment")
     else:
@@ -116,20 +119,38 @@ def book_room(request):
 
 
 def makePayment(req):
+    uemail = req.user.email
     checkAvail = CheckAvailable.objects.filter(user=req.user)
     total_price = 0
     for x in checkAvail:
         total_price = x.room.room_price
         booking_id = x.booking_id
+    print(total_price)
+    orderdetails = CheckAvailable.objects.filter(user=req.user)
+    order_details = [
+        {
+            "booking_id": order.booking_id,
+            "hotel_name": order.room.hotel.hotel_name,
+            "room_id": order.room.room_id,
+            "location": order.room.hotel.location,
+            "check_in": order.check_in_date,
+            "check_out": order.check_out_date,
+            "num_guest": order.num_guests,
+            "price": order.room.room_price,
+        }
+        for order in orderdetails
+    ]
     client = razorpay.Client(
         auth=("rzp_test_sUTZ37PTI6oDaZ", "81iQLqkJ2a10ceOpuTfHHSG2")
     )
-    data = {"amount": total_price * 100, "currency": "INR", "receipt": booking_id}
+    data = {"amount": total_price * 100, "currency": "INR", "receipt": str(booking_id)}
     payment = client.order.create(data=data)
     context = {}
     context["data"] = payment
     context["amount"] = payment["amount"]
+    # messages.success(req, "Congratulations! Booking Successfull")
     # booking.update(is_completed=True)
+    sendUserMail(req, order_details, req.user.email, total_price)
     return render(req, "payment.html", context)
 
 
@@ -158,9 +179,7 @@ def check_room_availability(request, rid):
                 .exclude(room_id__in=rr)
             )
             if len(room) == 0:
-                messages.warning(
-                    request, "Sorry No Rooms Are Available on this time period"
-                )
+                messages.warning(request, "Sorry No Rooms Are Available")
             data = {"rooms": room, "flag": True}
             response = render(request, "checkAvailability.html", data)
         except Exception as e:
@@ -415,3 +434,19 @@ def myBooking(req):
     if not bookings:
         messages.warning(req, "No Bookings Found")
     return render(req, "myBooking.html", {"bookings": bookings})
+
+
+def sendUserMail(req, od, recipient_email, tp):
+    email_body = render_to_string(
+        "booking_email.html", {"order_details": od, "total_price": tp}
+    )
+    messages = EmailMultiAlternatives(
+        subject="Order placed successfully",
+        body=email_body,
+        from_email=None,
+        to=[recipient_email],
+    )
+    messages.attach_alternative(email_body, "text/html")
+    messages.send()
+
+    return HttpResponse("Mail sent successfully")

@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Orders</title>
+</head>
+
+<body>
+    <h1>Order Placed Successfully</h1>
+    <p>Thank you for your order! Below are the details: </p>
+    {% for order_detail in order_details %}
+    {% if order_detail == order_details|last %}
+    <table cellspacing="10px" cellpadding="10px">
+        <tr>
+            <th>Booking Id: </th>
+            <td>{{order_detail.booking_id}}</td>
+            <th>Hotel Name: </th>
+            <td>{{order_detail.hotel_name}}</td>
+        </tr>
+        <tr>
+            <th>Room No.: </th>
+            <td>{{order_detail.room_id}}</td>
+            <th>Location: </th>
+            <td>{{order_detail.location}}</td>
+        </tr>
+        <tr>
+            <th>Check-in Date: </th>
+            <td>{{order_detail.check_in}}</td>
+            <th>Check-out Date: </th>
+            <td>{{order_detail.check_out}}</td>
+        </tr>
+        <tr>
+            <th>Total Guest: </th>
+            <td>{{order_detail.num_guest}}</td>
+            <th>Total Price: </th>
+            <td>{{order_detail.price}}</td>
+        </tr>
+    </table>
+    {% endif %}
+    {% endfor %}
+    <p>Total Price: {{ total_price }}</p>
+    <p>Thank you for shopping with us!</p>
+</body>
+
+</html>
