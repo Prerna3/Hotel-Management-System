@@ -293,9 +293,11 @@ def aclist(req, hid):
     if req.method == "GET":
         hotels = Hotel.objects.get(hotel_id=hid)
         queryset = Room.prod.aclist(hid)
+        gallery = ImageGallery.objects.filter(hotel_id=hid)
         context = {}
         context["rooms"] = queryset
         context["hotels"] = hotels
+        context["gallery"] = gallery
         return render(req, "viewRoom.html", context)
 
 
@@ -303,9 +305,11 @@ def nonaclist(req, hid):
     if req.method == "GET":
         hotels = Hotel.objects.get(hotel_id=hid)
         queryset = Room.prod.nonaclist(hid)
+        gallery = ImageGallery.objects.filter(hotel_id=hid)
         context = {}
         context["rooms"] = queryset
         context["hotels"] = hotels
+        context["gallery"] = gallery
         return render(req, "viewRoom.html", context)
 
 
@@ -313,9 +317,11 @@ def kingroomlist(req, hid):
     if req.method == "GET":
         hotels = Hotel.objects.get(hotel_id=hid)
         queryset = Room.prod.kingroomlist(hid)
+        gallery = ImageGallery.objects.filter(hotel_id=hid)
         context = {}
         context["rooms"] = queryset
         context["hotels"] = hotels
+        context["gallery"] = gallery
         return render(req, "viewRoom.html", context)
 
 
@@ -323,9 +329,11 @@ def queenroomlist(req, hid):
     if req.method == "GET":
         hotels = Hotel.objects.get(hotel_id=hid)
         queryset = Room.prod.queenroomlist(hid)
+        gallery = ImageGallery.objects.filter(hotel_id=hid)
         context = {}
         context["rooms"] = queryset
         context["hotels"] = hotels
+        context["gallery"] = gallery
         return render(req, "viewRoom.html", context)
 
 
@@ -333,9 +341,11 @@ def twinroomlist(req, hid):
     if req.method == "GET":
         hotels = Hotel.objects.get(hotel_id=hid)
         queryset = Room.prod.twinroomlist(hid)
+        gallery = ImageGallery.objects.filter(hotel_id=hid)
         context = {}
         context["rooms"] = queryset
         context["hotels"] = hotels
+        context["gallery"] = gallery
         return render(req, "viewRoom.html", context)
 
 
@@ -343,9 +353,11 @@ def singleroomlist(req, hid):
     if req.method == "GET":
         hotels = Hotel.objects.get(hotel_id=hid)
         queryset = Room.prod.singleroomlist(hid)
+        gallery = ImageGallery.objects.filter(hotel_id=hid)
         context = {}
         context["rooms"] = queryset
         context["hotels"] = hotels
+        context["gallery"] = gallery
         return render(req, "viewRoom.html", context)
 
 
@@ -353,9 +365,11 @@ def doubleroomlist(req, hid):
     if req.method == "GET":
         hotels = Hotel.objects.get(hotel_id=hid)
         queryset = Room.prod.doubleroomlist(hid)
+        gallery = ImageGallery.objects.filter(hotel_id=hid)
         context = {}
         context["rooms"] = queryset
         context["hotels"] = hotels
+        context["gallery"] = gallery
         return render(req, "viewRoom.html", context)
 
 
@@ -363,9 +377,11 @@ def doubledoubleroomlist(req, hid):
     if req.method == "GET":
         hotels = Hotel.objects.get(hotel_id=hid)
         queryset = Room.prod.doubledoubleroomlist(hid)
+        gallery = ImageGallery.objects.filter(hotel_id=hid)
         context = {}
         context["rooms"] = queryset
         context["hotels"] = hotels
+        context["gallery"] = gallery
         return render(req, "viewRoom.html", context)
 
 
@@ -373,9 +389,11 @@ def priceOrder(req, hid):
     if req.method == "GET":
         hotels = Hotel.objects.get(hotel_id=hid)
         queryset = Room.objects.filter(hotel_id=hid).order_by("room_price")
+        gallery = ImageGallery.objects.filter(hotel_id=hid)
         context = {}
         context["rooms"] = queryset
         context["hotels"] = hotels
+        context["gallery"] = gallery
         return render(req, "viewRoom.html", context)
 
 
@@ -383,9 +401,11 @@ def descpriceOrder(req, hid):
     if req.method == "GET":
         hotels = Hotel.objects.get(hotel_id=hid)
         queryset = Room.objects.filter(hotel_id=hid).order_by("-room_price")
+        gallery = ImageGallery.objects.filter(hotel_id=hid)
         context = {}
         context["rooms"] = queryset
         context["hotels"] = hotels
+        context["gallery"] = gallery
         return render(req, "viewRoom.html", context)
 
 
