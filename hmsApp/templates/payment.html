@@ -21,6 +21,9 @@ Ekart | Payment
         "image": "https://example.com/your_logo",
         "order_id": "{{data.id}}", //This is a sample Order ID. Pass the `id` obtained in the response of Step 1
         // "callback_url": "https://eneqd3r9zrjok.x.pipedream.net/",
+        "handler": function (response) {
+            window.location.href = "http://localhost:8000/"
+        },
         "prefill": { //We recommend using the prefill parameter to auto-fill customer's contact information especially their phone number
             "name": "Gaurav Kumar", //your customer's name
             "email": "gaurav.kumar@example.com",
